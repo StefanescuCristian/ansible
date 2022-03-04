@@ -1,0 +1,46 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Clone own git
+      git:
+        repo: https://github.com/StefanescuCristian/dotfiles.git
+        dest: ~/mystuff/dotfiles
+
+    - name: Clone zgenom git
+      git:
+        repo: https://github.com/jandamm/zgenom.git
+        dest: ~/.zgenom
+
+    - name: Prepare vim pathogen and plugins
+      file:
+        path: "{{ item }}"
+        state: directory
+      loop:
+        - ~/.vim/autoload
+        - ~/.vim/bundle
+
+    - name: Install vim pathogen
+      get_url:
+        url: https://tpo.pe/pathogen.vim
+        dest: ~/.vim/autoload/pathogen.vim
+
+    - name: Install vim plugins
+      git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+      loop:
+        - { repo: https://github.com/vim-airline/vim-airline, dest: ~/.vim/bundle/vim-airline }
+        - { repo: https://github.com/vim-airline/vim-airline-themes, dest: ~/.vim/bundle/vim-airline-themes }
+        - { repo: https://github.com/tpope/vim-fugitive.git, dest: ~/.vim/bundle/vim-fugitive }
+
+    - name: Create symlinks for dotfiles
+      file:
+        src: '{{ item.src }}'
+        dest: '{{ item.dest }}'
+        state: link
+        force: yes
+      loop:
+        - { src: ~/mystuff/dotfiles/.zshrc, dest: ~/.zshrc }
+        - { src: ~/mystuff/dotfiles/.vimrc, dest: ~/.vimrc }
+        - { src: ~/mystuff/dotfiles/.gitconfig, dest: ~/.gitconfig }
