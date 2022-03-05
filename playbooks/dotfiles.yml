@@ -1,6 +1,7 @@
 ---
 - hosts: all
   become: true
+  strategy: free
   tasks:
     - name: Clone own git
       git:
@@ -42,5 +43,6 @@
         force: yes
       loop:
         - { src: ~/mystuff/dotfiles/.zshrc, dest: ~/.zshrc }
+        - { src: ~/mystuff/dotfiles/.p10k.zsh, dest: ~/.p10k.zsh }
         - { src: ~/mystuff/dotfiles/.vimrc, dest: ~/.vimrc }
         - { src: ~/mystuff/dotfiles/.gitconfig, dest: ~/.gitconfig }
