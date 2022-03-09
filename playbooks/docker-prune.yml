@@ -1,0 +1,29 @@
+---
+- hosts: dockers
+  become: true
+    #  strategy: free
+  tasks:
+    - name: Prune docker unused images
+      docker_prune:
+        images: yes
+        images_filters:
+          dangling: false
+      register: images
+    - name: Prune docker unused containers
+      docker_prune:
+        containers: yes
+      register: containers
+    - name: Prune docker unused volumes
+      docker_prune:
+        volumes: yes
+      register: volumes
+
+    - name: Volumes space reclaimed
+      debug:
+        msg: "{{ volumes.volumes_space_reclaimed }}"
+    - name: Containers space reclaimed
+      debug:
+        msg: "{{ containers.containers_space_reclaimed }}"
+    - name: Images space reclaimed
+      debug:
+        msg: "{{ images.images_space_reclaimed }}"
