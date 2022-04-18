@@ -46,3 +46,4 @@
         - { src: ~/mystuff/dotfiles/.p10k.zsh, dest: ~/.p10k.zsh }
         - { src: ~/mystuff/dotfiles/.vimrc, dest: ~/.vimrc }
         - { src: ~/mystuff/dotfiles/.gitconfig, dest: ~/.gitconfig }
+        - { src: ~/mystuff/dotfiles/.htoprc, dest: ~/.htoprc }
